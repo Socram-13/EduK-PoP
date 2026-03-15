@@ -730,7 +730,8 @@
     }
 
     @media (max-width: 760px) {
-      .screen { padding: 20px; }
+      .screen { padding: 16px; }
+
       .game-header,
       .info-grid,
       .results-grid,
@@ -738,19 +739,43 @@
         grid-template-columns: 1fr;
       }
 
+      /* Timer: pequeño en esquina superior izquierda, lejos del HUD */
       .timer-float {
-        top: 12px;
-        right: 12px;
+        top: auto;
+        bottom: 16px;
+        right: 16px;
+        left: auto;
       }
 
       .timer-ring {
-        width: 108px;
-        height: 108px;
+        width: 72px;
+        height: 72px;
       }
 
-      .timer-float {
-        top: 70px;
-        right: 12px;
+      .timer-inner span {
+        font-size: 0.55rem;
+      }
+
+      .timer-inner strong {
+        font-size: 1.6rem;
+      }
+
+      /* Personaje: reducido y pegado al borde, no tapa contenido */
+      .char-mascot {
+        width: 140px;
+        bottom: -20px;
+        right: 0;
+        opacity: 0.6;
+      }
+
+      /* Burbuja: reposicionada sobre el personaje pequeño */
+      .char-bubble {
+        bottom: 130px;
+        right: 8px;
+        left: 8px;
+        max-width: none;
+        font-size: 1rem;
+        padding: 8px 12px;
       }
 
       .answer-row {
@@ -763,13 +788,8 @@
         width: 100%;
       }
 
-      .timer-ring {
-        width: 148px;
-        height: 148px;
-      }
-
       .question {
-        font-size: 3rem;
+        font-size: 2.6rem;
       }
     }
   
