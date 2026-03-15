@@ -790,24 +790,7 @@
         display: none;
       }
 
-      /* Personaje: pequeño, esquina inferior derecha, completamente visible */
-      .char-mascot {
-        width: 90px;
-        bottom: 0px;
-        right: 0px;
-        left: auto;
-        opacity: 1;
-      }
-
-      /* Burbuja: al lado izquierdo del personaje pequeño */
-      .char-bubble {
-        bottom: 80px;
-        right: 100px;
-        left: auto;
-        max-width: 200px;
-        font-size: 0.85rem;
-        padding: 6px 10px;
-      }
+      /* char-mascot y char-bubble van en media query separado DESPUÉS de la regla base */
 
       .answer-row {
         flex-direction: column;
@@ -1069,6 +1052,24 @@
       0%   { transform: translateY(0px);   }
       50%  { transform: translateY(-14px); }
       100% { transform: translateY(0px);   }
+    }
+
+    @media (max-width: 760px) {
+      .char-mascot {
+        width: 90px !important;
+        bottom: 0px !important;
+        right: 0px !important;
+        left: auto !important;
+        opacity: 1 !important;
+      }
+      .char-bubble {
+        bottom: 80px;
+        right: 100px;
+        left: auto;
+        max-width: 200px;
+        font-size: 0.85rem;
+        padding: 6px 10px;
+      }
     }
 
   
