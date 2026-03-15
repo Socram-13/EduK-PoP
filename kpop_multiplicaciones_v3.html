@@ -760,22 +760,52 @@
         font-size: 1.4rem;
       }
 
-      /* Personaje: reducido y pegado al borde, no tapa contenido */
-      .char-mascot {
-        width: 140px;
-        bottom: -20px;
-        right: 0;
-        opacity: 0.6;
+      /* Level bar: dos filas en móvil para que quepan estrellas y vidas */
+      .level-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        padding: 8px 12px;
       }
 
-      /* Burbuja: reposicionada sobre el personaje pequeño */
+      .level-bar-name {
+        font-size: 0.85rem;
+      }
+
+      .level-bar-progress {
+        width: 100%;
+        min-width: unset;
+      }
+
+      .level-bar-stats {
+        width: 100%;
+        white-space: normal;
+        flex-wrap: wrap;
+        gap: 6px;
+        font-size: 0.8rem;
+        justify-content: flex-start;
+      }
+
+      .level-bar-sep {
+        display: none;
+      }
+
+      /* Personaje: muy pequeño, esquina inferior derecha, semitransparente */
+      .char-mascot {
+        width: 90px;
+        bottom: 4px;
+        right: 4px;
+        opacity: 0.35;
+      }
+
+      /* Burbuja: al lado izquierdo del personaje pequeño */
       .char-bubble {
-        bottom: 130px;
-        right: 8px;
-        left: 8px;
-        max-width: none;
-        font-size: 1rem;
-        padding: 8px 12px;
+        bottom: 80px;
+        right: 100px;
+        left: auto;
+        max-width: 200px;
+        font-size: 0.85rem;
+        padding: 6px 10px;
       }
 
       .answer-row {
