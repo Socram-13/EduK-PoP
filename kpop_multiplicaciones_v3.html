@@ -1056,19 +1056,23 @@
 
     @media (max-width: 760px) {
       .char-mascot {
-        width: 90px !important;
-        bottom: 0px !important;
+        width: 160px !important;
+        bottom: -20px !important;
         right: 0px !important;
         left: auto !important;
         opacity: 1 !important;
       }
+      /* globo justo encima del personaje, alineado a la derecha */
       .char-bubble {
-        bottom: 80px;
-        right: 100px;
-        left: auto;
-        max-width: 200px;
+        bottom: 145px !important;
+        right: 8px !important;
+        left: auto !important;
+        max-width: 180px;
         font-size: 0.85rem;
         padding: 6px 10px;
+      }
+      .char-bubble::after {
+        right: 24px;
       }
     }
 
