@@ -1046,6 +1046,7 @@
 
     .char-mascot.hidden {
       opacity: 0;
+      display: none;
     }
 
     @keyframes charFloat {
@@ -2312,11 +2313,15 @@
 
     function updateCharVisibility(screen) {
       if (!charMascot) return;
-      // Mostrar en todas las pantallas
-      charMascot.classList.remove('hidden');
+      // Solo visible en la pantalla de juego
+      if (screen === gameScreen) {
+        charMascot.classList.remove('hidden');
+      } else {
+        charMascot.classList.add('hidden');
+      }
     }
 
-    // Elegir personaje al cargar (seguro: DOM ya está disponible porque script está al final del body)
+    // Al cargar, el personaje permanece oculto hasta que empiece la partida
     if (document.getElementById('charMascot')) pickRandomChar();
 
     // Cambiar personaje al iniciar nueva partida (dentro de startGame)
