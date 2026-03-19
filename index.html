@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduK-PoP · Aprende jugando</title>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:       #080510;
+      --red:      #ff3d5a;
+      --orange:   #ff8c42;
+      --violet:   #9a63ff;
+      --cyan:     #49d7ff;
+      --gold:     #ffd86b;
+      --text:     #f8f4ff;
+      --muted:    #c4a8e8;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans KR', sans-serif;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── animated bg blobs ── */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+    .blob-1 { width: 500px; height: 500px; background: rgba(154,99,255,.35); top: -120px; left: -120px; animation-duration: 20s; }
+    .blob-2 { width: 400px; height: 400px; background: rgba(255,61,90,.30); bottom: -80px; right: -80px; animation-duration: 16s; animation-delay: -8s; }
+    .blob-3 { width: 300px; height: 300px; background: rgba(73,215,255,.20); top: 45%; left: 55%; animation-duration: 24s; animation-delay: -4s; }
+
+    @keyframes drift {
+      0%   { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(40px, 60px) scale(1.08); }
+    }
+
+    /* ── noise grain overlay ── */
+    body::before {
+      content: "";
+      position: fixed; inset: 0; z-index: 1;
+      opacity: .03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    /* ── main wrapper ── */
+    .wrap {
+      position: relative; z-index: 2;
+      width: 100%; max-width: 900px;
+      padding: 48px 24px 80px;
+      display: flex; flex-direction: column; align-items: center; gap: 40px;
+    }
+
+    /* ── header ── */
+    .header { text-align: center; }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(154,99,255,.15);
+      border: 1px solid rgba(154,99,255,.4);
+      border-radius: 999px;
+      padding: 4px 16px;
+      font-size: .75rem; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--violet);
+      margin-top: 14px;
+      margin-bottom: 14px;
+    }
+
+    .logo-wrap {
+      position: relative;
+      display: block;
+      margin-bottom: 0;
+    }
+
+    .logo {
+      font-family: 'Black Han Sans', sans-serif;
+      font-size: clamp(3rem, 11vw, 6.2rem);
+      line-height: .95;
+      letter-spacing: .04em;
+      background: linear-gradient(
+        160deg,
+        #e8f8ff 0%,
+        #a8e8ff 12%,
+        #5bcfff 24%,
+        #1a9eff 36%,
+        #0055cc 48%,
+        #3399ff 56%,
+        #7dd6ff 66%,
+        #c2f0ff 76%,
+        #ffffff 84%,
+        #6ec8ff 92%,
+        #1a7fff 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% 200%;
+      animation: holoShift 5s ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 20px rgba(80,180,255,.6))
+              drop-shadow(3px 3px 0 rgba(0,30,100,.9))
+              drop-shadow(-1px -1px 0 rgba(200,240,255,.35));
+    }
+
+    @keyframes holoShift {
+      0%   { background-position: 0% 0%; }
+      100% { background-position: 100% 100%; }
+    }
+
+    .logo-wrap::before,
+    .logo-wrap::after {
+      content: "✦";
+      position: absolute;
+      color: #a8e8ff;
+      font-size: 1.3rem;
+      filter: drop-shadow(0 0 7px #5bcfff);
+      animation: sparkle 2.5s ease-in-out infinite;
+    }
+    .logo-wrap::before { top: 8%;   right: -22px; animation-delay: 0s; }
+    .logo-wrap::after  { bottom: 12%; left: -18px; animation-delay: -1.2s; font-size: .9rem; }
+
+    @keyframes sparkle {
+      0%,100% { opacity: .25; transform: scale(.7) rotate(0deg); }
+      50%      { opacity: 1;   transform: scale(1.3) rotate(25deg); }
+    }
+
+    .tagline {
+      margin-top: 12px;
+      font-size: clamp(.9rem, 2.5vw, 1.1rem);
+      color: var(--muted);
+      letter-spacing: .04em;
+    }
+
+    /* ── accent bar ── */
+    .bar {
+      width: 80px; height: 4px; border-radius: 2px;
+      background: linear-gradient(90deg, var(--red), var(--violet), var(--cyan));
+      margin: 0 auto;
+    }
+
+    /* ── game cards grid ── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      width: 100%;
+    }
+
+    .card {
+      position: relative;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 24px;
+      padding: 36px 28px 32px;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease, border-color .25s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: rgba(255,255,255,.25);
+    }
+    .card:active { transform: translateY(-2px) scale(1); }
+
+    /* glow accent per card */
+    .card-mult { --accent: #ff8c42; --accent2: #ff3d5a; }
+    .card-div  { --accent: #9a63ff; --accent2: #49d7ff; }
+
+    .card::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(var(--acc-rgb),.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .card-mult::before { --acc-rgb: 255,140,66; }
+    .card-div::before  { --acc-rgb: 154,99,255; }
+
+    .card:hover { box-shadow: 0 0 40px -8px var(--accent); }
+
+    .card-icon {
+      font-size: 3.2rem;
+      line-height: 1;
+      margin-bottom: 16px;
+      filter: drop-shadow(0 0 12px var(--accent));
+      animation: float 3s ease-in-out infinite;
+    }
+    .card:nth-child(2) .card-icon { animation-delay: -.8s; }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+
+    .card-badge {
+      display: inline-block;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 999px;
+      padding: 3px 14px;
+      font-size: .7rem; font-weight: 800;
+      letter-spacing: .1em; text-transform: uppercase;
+      color: #fff;
+      margin-bottom: 14px;
+    }
+
+    .card-title {
+      font-family: 'Black Han Sans', sans-serif;
+      font-size: 2rem;
+      line-height: 1.1;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, var(--accent), #fff, var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .card-desc {
+      font-size: .88rem;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 28px;
+    }
+
+    .card-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 28px;
+      border-radius: 14px;
+      font-size: .95rem; font-weight: 800;
+      letter-spacing: .06em;
+      color: #fff;
+      border: none; cursor: pointer;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      box-shadow: 0 4px 24px -4px var(--accent);
+      transition: box-shadow .2s ease, transform .15s ease;
+      text-decoration: none;
+    }
+    .card:hover .card-btn {
+      box-shadow: 0 6px 32px -4px var(--accent);
+      transform: scale(1.04);
+    }
+
+    .card-tag {
+      margin-top: 18px;
+      font-size: .72rem;
+      color: rgba(255,255,255,.25);
+      display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+    }
+    .card-tag span {
+      background: rgba(255,255,255,.06);
+      border-radius: 6px;
+      padding: 2px 8px;
+    }
+
+    /* ── decorative divider ── */
+    .divider {
+      display: flex; align-items: center; gap: 16px;
+      width: 100%;
+    }
+    .divider-line { flex: 1; height: 1px; background: rgba(255,255,255,.08); }
+    .divider-txt  { font-size: .75rem; color: rgba(255,255,255,.2); letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+
+    /* ── footer ── */
+    .footer {
+      position: relative; z-index: 2;
+      text-align: center;
+      font-size: .72rem;
+      color: rgba(255,255,255,.18);
+      padding: 0 24px 32px;
+      letter-spacing: .06em;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <div class="wrap">
+
+    <header class="header">
+      <div class="eyebrow">🐱 Kat-Purr Demon Kittens</div>
+      <div class="logo-wrap">
+        <h1 class="logo">EduK-PoP</h1>
+      </div>
+      <div class="bar"></div>
+      <p class="tagline">Aprende matemáticas salvando la Honmoon ⚔️</p>
+    </header>
+
+    <div class="cards">
+
+      <!-- MultipliK -->
+      <a class="card card-mult" href="kpop_multiplicaciones_v3.html">
+        <div class="card-icon">✖️</div>
+        <div class="card-badge">Multiplicaciones</div>
+        <h2 class="card-title">Multipli K-POP</h2>
+        <p class="card-desc">
+          Las hordas demoniacas atacan la Honmoon. Derrota a los Saya Dogs resolviendo multiplicaciones y sube de nivel con cada racha perfecta.
+        </p>
+        <span class="card-btn">¡Atacar! ⚡</span>
+        <div class="card-tag">
+          <span>16 niveles</span>
+          <span>Tablas del 1 al 10</span>
+          <span>Modo combate</span>
+        </div>
+      </a>
+
+      <!-- DivisiK -->
+      <a class="card card-div" href="kpop_divisiones_v2.html">
+        <div class="card-icon">➗</div>
+        <div class="card-badge">Divisiones</div>
+        <h2 class="card-title">Divi SayaDogs</h2>
+        <p class="card-desc">
+          Los Saya Dogs bloquean el camino. Usa el poder de las divisiones para derrotarlos uno a uno y conquista todos los niveles.
+        </p>
+        <span class="card-btn">¡Atacar! ⚔️</span>
+        <div class="card-tag">
+          <span>16 niveles</span>
+          <span>Divisores 2–10</span>
+          <span>Modo combate</span>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-txt">¡Elige tu misión, Hunter!</div>
+      <div class="divider-line"></div>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    🐱 EduK-PoP · Kat-Purr Demon Kittens · Salva la Honmoon con el poder de las matemáticas ⚔️
+  </footer>
+
+</body>
+</html>
