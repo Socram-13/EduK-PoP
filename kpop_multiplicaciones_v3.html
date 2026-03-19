@@ -1421,10 +1421,23 @@
         <div class="feedback" id="feedbackBox">Listo para el primer golpe matemático.</div>
 
         <div class="controls" style="justify-content: space-between; margin-top: 18px;">
-          <button class="btn-secondary" id="restartBtn">Reiniciar</button>
-          <button class="btn-secondary" id="backBtn">Salir al inicio</button>
+          <button class="btn-secondary" id="restartBtn">🔄 Reiniciar nivel</button>
+          <button class="btn-secondary" id="backBtn">🚪 Salir</button>
         </div>
       </section>
+
+      <!-- Modal de confirmación de rendición -->
+      <div class="modal-overlay" id="surrenderModal">
+        <div class="modal-card">
+          <div class="badge">😈 ¡Los Saya Dogs te esperan!</div>
+          <h3><span class="gradient-text" id="surrenderTitle">¿Abandonas la Honmoon?</span></h3>
+          <p id="surrenderMessage">Si sales ahora, los Saya Dogs ganan. ¿De verdad te unes a su bando?</p>
+          <div class="controls" style="justify-content:center; gap: 12px; margin-top: 8px;">
+            <button class="btn-primary" id="surrenderCancelBtn">¡Jamás! Sigo peleando 🐱</button>
+            <button class="btn-secondary" id="surrenderConfirmBtn">Me rindo... 🐾</button>
+          </div>
+        </div>
+      </div>
 
 
         <div class="modal-overlay" id="levelCompleteModal">
@@ -1659,22 +1672,22 @@
     }
 
     const levels = [
-      { name: 'Nivel 1  · Primer rugido',  aMin: 1, aMax: 5,  bMin: 1, bMax: 5,  description: 'Las primeras hordas se acercan. Tablas del 1 al 5.',              timeLimit: 10 },
-      { name: 'Nivel 2  · La Honmoon despierta',        aMin: 2, aMax: 6,  bMin: 2, bMax: 6,  description: 'La Honmoon necesita más poder. Tablas del 2 al 6.',      timeLimit: 10 },
-      { name: 'Nivel 3  · Horda en las calles',    aMin: 2, aMax: 7,  bMin: 2, bMax: 7,  description: 'Los demonios aumentan. Tablas del 2 al 7.',               timeLimit: 10 },
-      { name: 'Nivel 4  · Rumiaw entra en acción',   aMin: 2, aMax: 8,  bMin: 2, bMax: 8,  description: 'Rumiaw lidera el ataque. Tablas del 2 al 8.',             timeLimit: 10 },
-      { name: 'Nivel 5  · Zoew desenvaina', aMin: 2, aMax: 9,  bMin: 2, bMax: 9,  description: 'Zoew desenvaina su espada. Tablas del 2 al 9.',            timeLimit: 10 },
-      { name: 'Nivel 6  · Miraw lanza el hechizo',         aMin: 2, aMax: 10, bMin: 2, bMax: 10, description: 'Miraw lanza su hechizo. Tablas del 2 al 10.',         timeLimit: 10 },
-      { name: 'Nivel 7  · Doble amenaza demoniaca',         aMin: 2, aMax: 11, bMin: 2, bMax: 11, description: 'Doble horda demoniaca. Tablas del 2 al 11.',       timeLimit: 10 },
-      { name: 'Nivel 8  · El portal se abre',         aMin: 2, aMax: 12, bMin: 2, bMax: 12, description: 'El portal se abre. Tablas del 2 al 12.',      timeLimit: 10 },
-      { name: 'Nivel 9  · Saya Dogs aparecen',    aMin: 3, aMax: 13, bMin: 3, bMax: 13, description: 'Los Saya Dogs aparecen. Tablas del 3 al 13.',           timeLimit: 10 },
-      { name: 'Nivel 10 · Kittens al límite',       aMin: 3, aMax: 14, bMin: 3, bMax: 14, description: 'Las Kittens al límite. Tablas del 3 al 14.',   timeLimit: 10 },
-      { name: 'Nivel 11 · La Honmoon tiembla',         aMin: 3, aMax: 15, bMin: 3, bMax: 15, description: 'La Honmoon tiembla. Tablas del 3 al 15.',   timeLimit: 10 },
-      { name: 'Nivel 12 · Oscuridad total',        aMin: 4, aMax: 16, bMin: 4, bMax: 16, description: 'Oscuridad total. Tablas del 4 al 16.', timeLimit: 10 },
-      { name: 'Nivel 13 · Tormenta demoniaca',         aMin: 4, aMax: 17, bMin: 4, bMax: 17, description: 'Tormenta demoniaca sin piedad. Tablas del 4 al 17.',              timeLimit: 10 },
-      { name: 'Nivel 14 · Corazón de la Honmoon',        aMin: 4, aMax: 18, bMin: 4, bMax: 18, description: 'Corazón de la Honmoon en juego. Tablas del 4 al 18.',           timeLimit: 10 },
-      { name: 'Nivel 15 · Batalla final · Fase 1',       aMin: 5, aMax: 19, bMin: 5, bMax: 19, description: 'Batalla final fase 1. Tablas del 5 al 19.',         timeLimit: 10 },
-      { name: 'Nivel 16 · Gran Final · Los Saya Dogs',         aMin: 5, aMax: 20, bMin: 5, bMax: 20, description: 'Los Saya Dogs esperan. ¡Defiende la Honmoon! Tablas del 5 al 20.',      timeLimit: 10 },
+      { name: 'Nivel 1  · Primer rugido',          aMin: 1, aMax: 5,  bMin: 1, bMax: 5,  description: 'Las primeras hordas se acercan. Tablas del 1 al 5.'          },
+      { name: 'Nivel 2  · La Honmoon despierta',   aMin: 2, aMax: 6,  bMin: 2, bMax: 6,  description: 'La Honmoon necesita más poder. Tablas del 2 al 6.'            },
+      { name: 'Nivel 3  · Horda en las calles',    aMin: 2, aMax: 7,  bMin: 2, bMax: 7,  description: 'Los demonios aumentan. Tablas del 2 al 7.'                    },
+      { name: 'Nivel 4  · Rumiaw entra en acción', aMin: 2, aMax: 8,  bMin: 2, bMax: 8,  description: 'Rumiaw lidera el ataque. Tablas del 2 al 8.'                  },
+      { name: 'Nivel 5  · Zoew desenvaina',        aMin: 2, aMax: 9,  bMin: 2, bMax: 9,  description: 'Zoew desenvaina su espada. Tablas del 2 al 9.'                },
+      { name: 'Nivel 6  · Miraw lanza el hechizo', aMin: 2, aMax: 10, bMin: 2, bMax: 10, description: 'Miraw lanza su hechizo. Tablas del 2 al 10.'                  },
+      { name: 'Nivel 7  · Doble amenaza',          aMin: 2, aMax: 11, bMin: 2, bMax: 11, description: 'Doble horda demoniaca. Tablas del 2 al 11.'                   },
+      { name: 'Nivel 8  · El portal se abre',      aMin: 2, aMax: 12, bMin: 2, bMax: 12, description: 'El portal se abre. Domina las tablas del 2 al 12.'            },
+      { name: 'Nivel 9  · Saya Dogs aparecen',     aMin: 3, aMax: 12, bMin: 3, bMax: 12, description: 'Los fáciles se van. Tablas del 3 al 12.'                      },
+      { name: 'Nivel 10 · Kittens al límite',      aMin: 4, aMax: 12, bMin: 4, bMax: 12, description: 'Sin red de seguridad. Tablas del 4 al 12.'                    },
+      { name: 'Nivel 11 · La Honmoon tiembla',     aMin: 5, aMax: 12, bMin: 5, bMax: 12, description: 'La Honmoon tiembla. Tablas del 5 al 12.'                      },
+      { name: 'Nivel 12 · Oscuridad total',        aMin: 6, aMax: 12, bMin: 6, bMax: 12, description: 'Oscuridad total. Tablas del 6 al 12.'                         },
+      { name: 'Nivel 13 · Tormenta demoniaca',     aMin: 7, aMax: 12, bMin: 7, bMax: 12, description: 'Tormenta sin piedad. Tablas del 7 al 12.'                     },
+      { name: 'Nivel 14 · Corazón de la Honmoon',  aMin: 8, aMax: 12, bMin: 8, bMax: 12, description: 'Corazón de la Honmoon en juego. Tablas del 8 al 12.'          },
+      { name: 'Nivel 15 · Batalla final · Fase 1', aMin: 9, aMax: 12, bMin: 9, bMax: 12, description: 'Casi en el límite. Tablas del 9 al 12.'                       },
+      { name: 'Nivel 16 · Gran Final · Saya Dogs', aMin: 10, aMax: 12, bMin: 10, bMax: 12, description: 'Solo las más difíciles. ¡Defiende la Honmoon! Tablas del 10 al 12.' },
     ];
 
     const QUESTIONS_TO_PASS = 15;   // aciertos consecutivos para subir
@@ -2483,9 +2496,53 @@
     startBtn.addEventListener('click', startGame);
     continueBtn.addEventListener('click', continueAfterLevel);
     stopBtn.addEventListener('click', stopAfterLevel);
-    restartBtn.addEventListener('click', () => { goHome(); });
+
+    // Reiniciar: solo reinicia el nivel actual, sin salir
+    restartBtn.addEventListener('click', () => {
+      clearInterval(timer);
+      state.levelRetries = 0;
+      resetLevelState();
+      updateHUD();
+      nextQuestion();
+      updateFeedback(`¡Nivel reiniciado, ${firstName()}! Vuelve a la carga. ⚔️`, 'levelup');
+    });
+
+    // Salir: muestra modal de confirmación con vergüenza
+    const surrenderPhrases = [
+      { title: '¿Abandonas la Honmoon?',         msg: `Los Saya Dogs llevan la cuenta, ${firstName()}. Si sales ahora, la Honmoon cae y tú te conviertes en uno de ellos.` },
+      { title: '¿Te unes a los Saya Dogs?',       msg: `Gwi-Ma está buscando reclutas. ¿Segura que quieres darle esa satisfacción, ${firstName()}?` },
+      { title: '¿Dejas a Zoew y Rumiaw solas?',   msg: `Miraw, Zoew y Rumiaw están peleando por ti ahora mismo. ¿Las abandonas, ${firstName()}?` },
+      { title: '¿La Honmoon cae por ti?',         msg: `Si sales ahora, Gwi-Ma rompe la Honmoon. ¿Eso es lo que quieres, ${firstName()}?` },
+      { title: '¿Te conviertes en Saya Dog?',     msg: `Los Saya Dogs se alimentan de rendiciones. No les des ese gusto, ${firstName()}.` },
+    ];
+
+    backBtn.addEventListener('click', () => {
+      const phrase = surrenderPhrases[Math.floor(Math.random() * surrenderPhrases.length)];
+      document.getElementById('surrenderTitle').textContent   = phrase.title;
+      document.getElementById('surrenderMessage').textContent = phrase.msg;
+      document.getElementById('surrenderModal').classList.add('active');
+      clearInterval(timer);
+    });
+
+    document.getElementById('surrenderCancelBtn').addEventListener('click', () => {
+      document.getElementById('surrenderModal').classList.remove('active');
+      // Reanudar el timer si había pregunta activa
+      if (state.accepting && document.getElementById('gameScreen').classList.contains('active')) {
+        startTimer();
+      }
+    });
+
+    document.getElementById('surrenderConfirmBtn').addEventListener('click', () => {
+      document.getElementById('surrenderModal').classList.remove('active');
+      // Guardar record con nombre "Saya-Nombre"
+      const sayaName = 'Saya-' + firstName();
+      if (state.score > 0) {
+        saveRecord(sayaName, state.score, state.levelIndex + 1, state.correct);
+      }
+      goHome();
+    });
+
     playAgainBtn.addEventListener('click', startGame);
-    backBtn.addEventListener('click', goHome);
     homeBtn.addEventListener('click', goHome);
     submitBtn.addEventListener('click', checkAnswer);
 
